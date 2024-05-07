@@ -342,5 +342,12 @@ describe('Shp', function () {
         return thing.features[0].geometry.coordinates;
       }).should.eventually.have.length(2);
     });
+    it('should handle files that lie about their length', function () {
+      return shp('http://localhost:3000/test/data/badlen.zip').then(thing => {
+        thing.should.contain.keys('type', 'features');
+        thing.should.have.property('type', 'FeatureCollection');
+        return thing.features;
+      }).should.eventually.have.length(203);
+    });
   });
 });
