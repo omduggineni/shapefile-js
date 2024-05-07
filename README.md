@@ -26,6 +26,8 @@ If you need a stand alone file to include in your webpage the old fasion when th
 
     https://unpkg.com/shpjs@latest/dist/shp.js
 
+NOTE: as of V5 the version you get though npm is an ES module, so make sure you import it instead of requiring it.
+
 ## API
 
 Has a function `shp` which accepts a string which is the path the she shapefile minus the extension and returns a promise which resolves into geojson.

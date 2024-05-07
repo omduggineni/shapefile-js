@@ -9975,9 +9975,6 @@
     }
     this.buffer = buffer;
     this.headers = this.parseHeader();
-    if (this.headers.length < this.buffer.byteLength) {
-      this.buffer = this.buffer.slice(0, this.headers.length);
-    }
     this.shpFuncs(trans);
     this.rows = this.getRows();
   }
@@ -9996,7 +9993,7 @@
     return this.parseHeader().shpCode;
   };
   ParseShp.prototype.parseHeader = function () {
-    const view = this.buffer.slice(0, 100);
+    const view = this.buffer.subarray(0, 100);
     return {
       length: view.readInt32BE(6 << 2) << 1,
       version: view.readInt32LE(7 << 2),
@@ -10011,11 +10008,12 @@
   };
   ParseShp.prototype.getRows = function () {
     let offset = 100;
-    const len = this.buffer.byteLength;
+    const olen = this.buffer.byteLength;
+    const len = olen - 8;
     const out = [];
     let current;
-    while (offset < len) {
-      current = this.getRow(offset);
+    while (offset <= len) {
+      current = this.getRow(offset, olen);
       if (!current) {
         break;
       }
@@ -10029,10 +10027,11 @@
     }
     return out;
   };
-  ParseShp.prototype.getRow = function (offset) {
-    const view = this.buffer.slice(offset, offset + 12);
+  ParseShp.prototype.getRow = function (offset, bufLen) {
+    const view = this.buffer.subarray(offset, offset + 12);
     const len = view.readInt32BE(4) << 1;
     const id = view.readInt32BE(0);
+
     if (len === 0) {
       return {
         id: id,
@@ -10040,10 +10039,15 @@
         type: 0
       };
     }
+
+    if (offset + len + 8 > bufLen) {
+      return;
+    }
+
     return {
       id: id,
       len: len,
-      data: this.buffer.slice(offset + 12, offset + len + 8),
+      data: this.buffer.subarray(offset + 12, offset + len + 8),
       type: view.readInt32LE(8)
     };
   };
@@ -18410,6 +18414,13 @@
           thing.should.have.property('type', 'FeatureCollection');
           return thing.features[0].geometry.coordinates;
         }).should.eventually.have.length(2);
+      });
+      it('should handle files that lie about their length', function () {
+        return getShapefile('http://localhost:3000/test/data/badlen.zip').then(thing => {
+          thing.should.contain.keys('type', 'features');
+          thing.should.have.property('type', 'FeatureCollection');
+          return thing.features;
+        }).should.eventually.have.length(203);
       });
     });
   });
