@@ -13804,7 +13804,7 @@
     return parseDbf(dbf, cpg);
   };
   const checkSuffix = (base, suffix) => {
-    const url = new URL(base);
+    const url = new URL(base, globalThis?.document?.location);
     return url.pathname.slice(-4).toLowerCase() === suffix;
   };
   const getShapefile = async function (base, whiteList) {
