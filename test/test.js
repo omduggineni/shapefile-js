@@ -9,7 +9,7 @@ use(chaiAsPromised);
 describe('Shp', function () {
   describe('park and rides not zipped', function () {
     const pandr = shp('http://localhost:3000/files/pandr');
-    it('should have the right keys 1', function () {
+    it('should have the right keys', function () {
       return pandr.should.eventually.contain.keys('type', 'features');
     });
     it('should be the right type', function () {
@@ -21,7 +21,7 @@ describe('Shp', function () {
   });
   describe('park and rides zipped', function () {
     const pandr = shp('http://localhost:3000/files/pandr.zip').catch(e => console.log('ERR', e));
-    it('should have the right keys 2', function () {
+    it('should have the right keys', function () {
       return pandr.should.eventually.contain.keys('type', 'features');
     });
     it('should be the right type', function () {
