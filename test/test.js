@@ -5,10 +5,40 @@ import { should as shouldRaw, use } from 'chai';
 import { chaiAsPromised } from 'chai-promised';
 const should = shouldRaw();
 use(chaiAsPromised);
-
+const get = url => fetch(url).then(resp => resp.arrayBuffer())
 describe('Shp', function () {
   describe('park and rides not zipped', function () {
     const pandr = shp('http://localhost:3000/files/pandr');
+    it('should have the right keys', function () {
+      return pandr.should.eventually.contain.keys('type', 'features');
+    });
+    it('should be the right type', function () {
+      return pandr.should.eventually.have.property('type', 'FeatureCollection');
+    });
+    it('should have the right number of features', function () {
+      return pandr.then(function (a) { return a.features; }).should.eventually.have.length(80);
+    });
+  });
+  describe('park and rides not zipped but with suffix', function () {
+    const pandr = shp('http://localhost:3000/files/pandr.shp');
+    it('should have the right keys', function () {
+      return pandr.should.eventually.contain.keys('type', 'features');
+    });
+    it('should be the right type', function () {
+      return pandr.should.eventually.have.property('type', 'FeatureCollection');
+    });
+    it('should have the right number of features', function () {
+      return pandr.then(function (a) { return a.features; }).should.eventually.have.length(80);
+    });
+  });
+  describe('park and rides not zipped but loaded individually', async function () {
+    const pandr = Promise.all([
+      get('http://localhost:3000/files/pandr.shp'),
+      get('http://localhost:3000/files/pandr.dbf'),
+      get('http://localhost:3000/files/pandr.prj')
+    ]).then(([shapefile, dbf, prj]) => shp({
+      shp: shapefile, dbf, prj
+    }))
     it('should have the right keys', function () {
       return pandr.should.eventually.contain.keys('type', 'features');
     });
@@ -239,6 +269,24 @@ describe('Shp', function () {
     });
     it('should work for codepage', function () {
       return shp('http://localhost:3000/test/data/codepage').then(function (item) {
+        item.should.contain.keys('type', 'features');
+        return item.features.map(function (feature) {
+          return feature.properties.field;
+        });
+      }).should.eventually.deep.equal([
+        '??',
+        'Hněvošický háj'
+      ]);
+    });
+    it('should work for codepage individually', function () {
+      return Promise.all([
+        get('http://localhost:3000/test/data/codepage.shp'),
+        get('http://localhost:3000/test/data/codepage.dbf'),
+        get('http://localhost:3000/test/data/codepage.prj'),
+        get('http://localhost:3000/test/data/codepage.cpg')
+      ]).then(([shapefile, dbf, prj, cpg]) => shp({
+        shp: shapefile, dbf, prj, cpg
+      })).then(function (item) {
         item.should.contain.keys('type', 'features');
         return item.features.map(function (feature) {
           return feature.properties.field;
