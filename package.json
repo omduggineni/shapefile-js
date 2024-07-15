@@ -1,6 +1,6 @@
 {
   "name": "shpjs",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "Load shapefiles in pure JavaScript",
   "main": "lib/index.js",
   "type": "module",
