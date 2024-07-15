@@ -1,7 +1,7 @@
 {
   "name": "shpjs",
   "version": "6.0.0",
-  "description": "A binary shapefile loader, for javascript. Not many caveats",
+  "description": "Load shapefiles in pure JavaScript",
   "main": "lib/index.js",
   "type": "module",
   "repository": {
@@ -19,9 +19,7 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
-    "@rollup/plugin-replace": "^5.0.5",
     "@rollup/plugin-terser": "^0.4.4",
     "chai": "^5.1.0",
     "chai-promised": "^1.0.2",
@@ -30,15 +28,11 @@
     "mocha": "^7.1.2",
     "morgan": "^1.10.0",
     "rollup": "^4.13.0",
-    "rollup-plugin-node-polyfills": "^0.2.1",
     "semistandard": "^16.0.1"
   },
   "dependencies": {
-    "jszip": "^3.10.1",
-    "parsedbf": "^1.1.0",
+    "but-unzip": "^0.1.4",
+    "parsedbf": "^2.0.0",
     "proj4": "^2.1.4"
-  },
-  "browser": {
-    "./lib/binaryajax.js": "./lib/binaryajax-fetch.js"
   }
 }
