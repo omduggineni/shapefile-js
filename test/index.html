@@ -1,4 +1,5 @@
 <html>
+
 <head>
   <meta charset="utf-8">
   <title>Mocha Tests</title>
@@ -8,15 +9,18 @@
 
 
   <script>
-  mocha.setup({
+    mocha.setup({
       ui: "bdd"
     });
   </script>
-  <script src="./bundle.js"></script>
-  </head>
-<body><div id="mocha"></div>
-<script>
-  mocha.run();
-</script>
+  <script src="./bundle-browser.js"></script>
+</head>
+
+<body>
+  <div id="mocha"></div>
+  <script>
+    mocha.run();
+  </script>
 </body>
+
 </html>

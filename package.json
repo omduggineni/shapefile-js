@@ -3,17 +3,19 @@
   "version": "6.0.1",
   "description": "Load shapefiles in pure JavaScript",
   "main": "lib/index.js",
+  "exports": {
+    "import": "./lib/index.js",
+    "require": "./dist/shp.js"
+  },
   "type": "module",
   "repository": {
     "type": "git",
     "url": "git://github.com/calvinmetcalf/shapefile-js.git"
   },
   "scripts": {
-    "test": "mocha ./test/test.js",
-    "build-test": "rollup -c -i ./test/test.js -o ./test/bundle.js -f iife",
+    "test": "mocha --require test/fixtures.js ./test/test.js",
     "build": "rollup -c",
-    "serve": "node test/server.js",
-    "build-min": "rollup -c -o dist/shp.min.js -p terser"
+    "test-browser": "SERVING=true node test/server.js"
   },
   "author": "Calvin Metcalf",
   "license": "MIT",
@@ -25,7 +27,7 @@
     "chai-promised": "^1.0.2",
     "eslint": "^8.24.0",
     "express": "^4.17.2",
-    "mocha": "^7.1.2",
+    "mocha": "^8.2.0",
     "morgan": "^1.10.0",
     "rollup": "^4.13.0",
     "semistandard": "^16.0.1"

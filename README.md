@@ -12,9 +12,18 @@ If you need a stand alone file to include in your webpage the old fashioned way 
 
     https://unpkg.com/shpjs@latest/dist/shp.js
 
-NOTE: as of V5 the version you get though npm is an ES module, so make sure you import it instead of requiring it.
+or
+
+	https://unpkg.com/shpjs@latest/dist/shp.min.js
+
 
 When using this library in some sort of bundler for the browser, no polyfills for node apis are required, the only thing needed is some sort of dependency resolver plugin like [rollup node-resolve](https://www.npmjs.com/package/@rollup/plugin-node-resolve) if your bundler doesn't have it, you are almost certainly already using one to get this library anyway.
+
+Addtionally you can import it directly into an esm based web script with 
+
+```js
+import shp from 'https://unpkg.com/shpjs@latest/dist/shp.esm.js'
+```
 
 ## API
 
@@ -70,6 +79,7 @@ const geojson = await shp(object)
 If there is only one shp in the zipefile it returns geojson, if there are multiple then it will be an array.  All of the geojson objects have an extra key `fileName` the value of which is the
 name of the shapefile minus the extension (I.E. the part of the name that's the same for all of them).
 
+
 # links
 
 - [wikipedia article](https://en.wikipedia.org/wiki/Shapefile)
@@ -82,11 +92,10 @@ name of the shapefile minus the extension (I.E. the part of the name that's the 
 - [Google maps](http://calvinmetcalf.github.io/shapefile-js/site/map.html)
 - [Local Zipfile](http://leaflet.calvinmetcalf.com)
 - [Projected big with web workers](http://calvinmetcalf.github.io/shapefile-js/site/proj.html)
-- [Projected small](
 
 ## About
 
-Descended in a shipe of theseus way from [RandomEtc's shapefile library](https://github.com/RandomEtc/shapefile-js) no code is shared.
+Descended in a ship of theseus way from [RandomEtc's shapefile library](https://github.com/RandomEtc/shapefile-js) no code is shared.
 
 - [World Borders shapefile](http://thematicmapping.org/downloads/world_borders.php) is CC-BY-SA 3.0.
 - Park and Ride shapefile is from [MassDOT](http://mass.gov/massdot) and is public domain.
